@@ -11,7 +11,7 @@ import {
  */
 const ContactInfoItem = ({ Icon, text }) => (
   <li className="flex items-center gap-4">
-    <Icon className="w-5 h-5 text-white flex-shrink-0" />
+    <Icon className="w-5 h-5 text-white shrink-0" />
     <span className="text-white text-sm">{text}</span>
   </li>
 );
@@ -44,7 +44,7 @@ const FormInput = ({ type = "text", placeholder, isTextArea = false }) => {
 export default function ContactSection() {
   // Replace with your actual image URLs
   const sectionBgUrl =
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=70&w=1080"; 
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=70&w=1080";
   const cardBgUrl =
     "https://images.unsplash.com/photo-1580489944761-15a1906941b2?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"; // Support agent
 
@@ -62,7 +62,7 @@ export default function ContactSection() {
           <h2 className="text-3xl font-bold uppercase mb-2">
             Ready to get started?
           </h2>
-          <div className="w-20 h-1 bg-white mb-8"></div> 
+          <div className="w-20 h-1 bg-white mb-8"></div>
           <form className="flex flex-col gap-5">
             <FormInput placeholder="Your Name" />
             <FormInput type="tel" placeholder="Phone Number" />
@@ -79,10 +79,7 @@ export default function ContactSection() {
         </div>
 
         {/* === Right Column: Contact Card === */}
-        <div
-          className="relative bg-cover bg-center rounded-lg shadow-lg overflow-hidden"
-          
-        >
+        <div className="relative bg-cover bg-center rounded-lg shadow-lg overflow-hidden">
           {/* Card Overlay (darker than the main section) */}
           <div className="absolute inset-0 bg-gray-900/60 "></div>
 
@@ -101,10 +98,7 @@ export default function ContactSection() {
                 text="95 South Park Ave, USA"
               />
               <ContactInfoItem Icon={FaPhoneAlt} text="+456 875 369 208" />
-              <ContactInfoItem
-                Icon={FaEnvelope}
-                text="support@homenest.com"
-              />
+              <ContactInfoItem Icon={FaEnvelope} text="support@homenest.com" />
               <ContactInfoItem Icon={FaClock} text="8:00 a.m - 9:00 p.m" />
             </ul>
           </div>

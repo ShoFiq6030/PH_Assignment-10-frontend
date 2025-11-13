@@ -3,6 +3,7 @@ import HeroSection from "../components/homepage/HeroSection";
 import ForSellSection from "../components/homepage/ForSellSection";
 import PopularPlaceSection from "../components/homepage/PopularPlaceSection";
 import ContactSection from "../components/homepage/ContactSection";
+import WhyChooseUs from "../components/homepage/WhyChooseUs";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
       <HeroSection />
       <ForSellSection />
       <PopularPlaceSection />
+      <WhyChooseUs />
       <ContactSection />
     </div>
   );

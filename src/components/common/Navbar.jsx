@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { FaBars, FaTimes, FaChevronDown, FaPlus, FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import LoginAndRegistration from "../loginRegistration/LoginAndRegistration";
@@ -13,11 +13,13 @@ export default function Navbar() {
   const [isAddPropertyModalOpen, setIsAddPropertyModalOpen] = useState(false);
   const [showUserDropDown, setShowUserDropDown] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success("Logged out successfully");
+      navigate("/");
     } catch (err) {
       toast.error("Logout failed");
     }

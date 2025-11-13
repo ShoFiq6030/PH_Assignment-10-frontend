@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaBed,
   FaBath,
@@ -7,9 +7,16 @@ import {
   FaLink,
   FaVideo,
   FaCamera,
+  FaEdit,
+  FaTrash,
 } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci";
 import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
+import { toast } from "react-toastify";
+import axios from "axios";
+import UpdatePropertyModal from "../updatePropertyModal/UpdatePropertyModal";
 
 export default function PropertyCard({ property = {} }) {
   const {
@@ -24,11 +31,45 @@ export default function PropertyCard({ property = {} }) {
     price = "$350,000",
     image = "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
   } = property;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { user } = useAuth();
+
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this property?")) return;
+
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/properties/${_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      toast.success("Property deleted successfully!");
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete property.");
+    }
+  };
 
   const formattedPrice = price?.toLocaleString();
 
   return (
     <div className="bg-white  w-[300px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+      {isModalOpen && (
+        <UpdatePropertyModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          property={property}
+          onSuccess={(updated) => {
+            // Optional: refresh list or update local state
+            console.log("Updated:", updated);
+          }}
+        />
+      )}
       {/* Image Section */}
       <div className="relative">
         <img src={image} alt={name} className="w-full h-56 object-cover" />
@@ -55,12 +96,32 @@ export default function PropertyCard({ property = {} }) {
 
       {/* Property Details */}
       <div className="p-4">
-        <Link
-          to={`/all-properties/${_id}`}
-          className="font-semibold text-lg hover:underline cursor-pointer"
-        >
-          {propertyName}
-        </Link>
+        <div className="flex justify-between items-center">
+          {" "}
+          <Link
+            to={`/all-properties/${_id}`}
+            className="font-semibold text-lg hover:underline cursor-pointer"
+          >
+            {propertyName}
+          </Link>
+          {user?._id === property.userId && (
+            <div className="flex gap-4 ">
+              <button
+                className=" cursor-pointer"
+                onClick={() => setIsModalOpen(!isModalOpen)}
+              >
+                <FaEdit />
+              </button>
+              <button
+                className="text-red-600 cursor-pointer"
+                onClick={handleDelete}
+              >
+                <FaTrash />
+              </button>
+            </div>
+          )}
+        </div>
+
         <p className="flex items-center text-sm text-gray-500 mt-1">
           <FaMapMarkerAlt className="mr-2 text-gray-400" /> {location}
         </p>

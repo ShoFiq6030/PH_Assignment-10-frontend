@@ -10,16 +10,25 @@ export function useApi({ url, method = "GET", body = null, deps = [] }) {
     if (!url) return;
 
     const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+      setLoading(true);
+      setError(null);
 
-        const res = await axios({
+      try {
+        const token = localStorage.getItem("token");
+
+        const config = {
           method,
           url: `${import.meta.env.VITE_API_BASE_URL}${url}`,
           data: body,
-        });
+          headers: {},
+        };
 
+        // Authorization header
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        const res = await axios(config);
         setData(res.data);
       } catch (err) {
         console.error("API error:", err);

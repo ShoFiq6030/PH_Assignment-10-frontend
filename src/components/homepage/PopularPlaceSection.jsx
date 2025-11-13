@@ -55,11 +55,9 @@ export default function PopularPlaceSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold  mb-2">
-            Most Popular Places
+            Most Popular <span className="text-pink-500">Places</span>
           </h2>
-          <p className=" text-lg">
-            Explore the world of real estate.
-          </p>
+          <p className=" text-lg">Explore the world of real estate.</p>
         </div>
 
         {/* Grid of Location Cards */}
