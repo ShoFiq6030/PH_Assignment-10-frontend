@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import UpdatePropertyModal from "../updatePropertyModal/UpdatePropertyModal";
 import { useLoginModal } from "../../hooks/useLoginModal";
+import ConfirmModal from "./ConfirmModal";
 
 export default function PropertyCard({ property = {} }) {
   const {
@@ -39,13 +40,14 @@ export default function PropertyCard({ property = {} }) {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const { openLoginModal, setOpenLoginModal } = useLoginModal();
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   if (isDeleted) return null;
 
   const { user } = useAuth();
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this property?")) return;
+
 
     try {
       await axios.delete(
@@ -74,6 +76,12 @@ export default function PropertyCard({ property = {} }) {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           property={property}
+        />
+      )}
+      {openConfirmModal && (
+        <ConfirmModal
+          onClose={() => setOpenConfirmModal(false)}
+          onConfirm={handleDelete}
         />
       )}
       {/* Image Section */}
@@ -132,7 +140,7 @@ export default function PropertyCard({ property = {} }) {
               </button>
               <button
                 className="text-red-600 cursor-pointer"
-                onClick={handleDelete}
+                onClick={() => setOpenConfirmModal(true)}
               >
                 <FaTrash />
               </button>

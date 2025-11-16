@@ -6,7 +6,7 @@ import HomePage from "./../pages/HomePage";
 
 import AllPropertiesPage from "../pages/AllPropertiesPage";
 import PropertyDetailsPage from "./../pages/PropertyDetailsPage";
-import AddPropertiesPage from "../pages/AddPropertiesPage";
+
 import MyPropertiesPage from "../pages/MyPropertiesPage";
 import MyRatingsPage from "../pages/MyRatingsPage";
 import NotFoundPage from "./../pages/NotFoundPage";
@@ -29,10 +29,7 @@ let router = createBrowserRouter([
         path: "/all-properties/:id",
         element: <PropertyDetailsPage />,
       },
-      {
-        path: "/add-properties",
-        element: <AddPropertiesPage />,
-      },
+      
       {
         path: "/my-properties",
         element: <MyPropertiesPage />,
