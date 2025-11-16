@@ -14,6 +14,9 @@ const FormInput = ({ label, type = "text", id }) => (
       className="block text-sm font-medium text-gray-700 mb-1"
     >
       {label} <span className="text-red-500">*</span>
+      {id === "password" && (
+        <span>(uppercase, lowercase and 6 characters) </span>
+      )}
     </label>
     <input
       type={type}
@@ -119,9 +122,18 @@ export default function LoginAndRegistration({
     const email = e.target.email.value;
     const photoFile = e.target.photo.files[0];
     const password = e.target.password.value;
-    console.log(photoFile);
-    setLoading(true);
+    // console.log(photoFile);
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password must contain at least 1 uppercase letter, 1 lowercase letter, and be at least 6 characters long."
+      );
+      return;
+    }
     setError(null);
+
+    setLoading(true);
 
     try {
       // Upload photo to Cloudinary
@@ -286,15 +298,22 @@ export default function LoginAndRegistration({
           {/* Register Form (Placeholder) */}
           {activeTab === "register" && (
             <form onSubmit={handleSignupSubmit} className="text-gray-700">
-              <FormInput label="Username" id="name" />
+              <FormInput label="Name" id="name" />
               <FormInput label="Email Address" id="email" />
               <fieldset className="fieldset pb-4">
-                <legend className="fieldset-legend">Photo</legend>
-                <input type="file" className="file-input" name="photo" />
+                <legend className="fieldset-legend">Photo<span className="text-red-500">*</span></legend>
+                <input
+                  type="file"
+                  className="file-input"
+                  name="photo"
+                  accept="image/*"
+                  required
+                />
                 <label className="label">Max size 2MB</label>
               </fieldset>
 
               <FormInput label="Password" type="password" id="password" />
+              {error && <p className="text-red-500"> {error}</p>}
 
               <button
                 type="submit"

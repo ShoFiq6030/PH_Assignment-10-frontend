@@ -2,9 +2,9 @@ import React from "react";
 import { FaStar, FaRegStar, FaUser } from "react-icons/fa";
 import { useApi } from "../../hooks/useApi";
 import { useAuth } from "../../hooks/useAuth";
+import { MdDelete } from "react-icons/md";
 
-export default function PropertyReviews({ reviewData,loading,error }) {
- 
+export default function PropertyReviews({ reviewData, loading, error }) {
   const { user } = useAuth();
   console.log(user);
   if (loading)
@@ -14,6 +14,9 @@ export default function PropertyReviews({ reviewData,loading,error }) {
       </div>
     );
 
+    const handleDelete= ()=>{
+     return toast.error("Del")
+    }
   if (error)
     return (
       <div className="text-center text-red-500 mt-6">
@@ -38,56 +41,62 @@ export default function PropertyReviews({ reviewData,loading,error }) {
         {reviewData?.map((review) => (
           <div
             key={review._id}
-            className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition"
+            className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition flex justify-between items-center"
           >
             {/* Header: User Info + Rating */}
-            <div className="flex flex-col items-start mb-3 gap-2">
-              <div className="flex gap-2">
-                {user?.photoURL ? (
-                  <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
-                    <img
-                      src={user?.photoURL}
-                      alt={user?.name}
-                      className="rounded-full object-cover w-12 h-12"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
-                    <FaUser className="text-pink-600 text-xl" />
-                  </div>
-                )}
+            <div>
+              <div className="flex flex-col items-start mb-3 gap-2">
+                <div className="flex gap-2">
+                  {user?.photoURL ? (
+                    <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
+                      <img
+                        src={user?.photoURL}
+                        alt={user?.name}
+                        className="rounded-full object-cover w-12 h-12"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
+                      <FaUser className="text-pink-600 text-xl" />
+                    </div>
+                  )}
 
-                <div>
-                  <h3 className="font-semibold text-gray-800">
-                    {review.userName}
-                  </h3>
-                  <p className="text-sm text-gray-500">{review.userEmail}</p>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      {review.userName}
+                    </h3>
+                    <p className="text-sm text-gray-500">{review.userEmail}</p>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="flex items-center">
+                  {Array.from({ length: 5 }).map((_, i) =>
+                    i < review.rating ? (
+                      <FaStar key={i} className="text-yellow-400" />
+                    ) : (
+                      <FaRegStar key={i} className="text-gray-300" />
+                    )
+                  )}
                 </div>
               </div>
 
-              {/* Rating */}
-              <div className="flex items-center">
-                {Array.from({ length: 5 }).map((_, i) =>
-                  i < review.rating ? (
-                    <FaStar key={i} className="text-yellow-400" />
-                  ) : (
-                    <FaRegStar key={i} className="text-gray-300" />
-                  )
-                )}
-              </div>
+              {/* Review Text */}
+              <p className="text-gray-700 mb-2">{review.reviewText}</p>
+
+              {/* Date */}
+              <p className="text-xs text-gray-400">
+                {new Date(review.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
             </div>
+            {
 
-            {/* Review Text */}
-            <p className="text-gray-700 mb-2">{review.reviewText}</p>
-
-            {/* Date */}
-            <p className="text-xs text-gray-400">
-              {new Date(review.createdAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </p>
+            }
+            <MdDelete size={25} className="text-red-600 cursor-pointer" onClick={handleDelete}/>
           </div>
         ))}
       </div>

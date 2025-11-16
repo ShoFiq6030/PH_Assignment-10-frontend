@@ -13,17 +13,17 @@ export default function WhyChooseUs() {
     {
       icon: <FaHome className="text-5xl text-pink-500 mb-4" />,
       title: "Wide Range Of Properties",
-      desc: "Lorem ipsum dolor sit amet, consectetur pro adipisici consectetur debitis adipisci.",
+      desc: "Discover a diverse selection of properties tailored to your needs, offering exceptional value and quality in every listing.",
     },
     {
       icon: <FaHandshake className="text-5xl text-pink-500 mb-4" />,
       title: "Trusted by thousands",
-      desc: "Lorem ipsum dolor sit amet, consectetur pro adipisici consectetur debitis adipisci.",
+      desc: "Thousands of satisfied clients rely on us for our commitment to quality, transparency, and exceptional service.",
     },
     {
       icon: <FaWallet className="text-5xl text-pink-500 mb-4" />,
       title: "Financing made easy",
-      desc: "Lorem ipsum dolor sit amet, consectetur pro adipisici consectetur debitis adipisci.",
+      desc: "We simplify the financing process with flexible options and expert guidance, helping you secure the best deal with confidence.",
     },
   ];
 
@@ -67,9 +67,9 @@ export default function WhyChooseUs() {
         {features.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition duration-300 text-center"
+            className="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col items-center justify-center "
           >
-            {item.icon}
+            <div className="">{item.icon}</div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
           </div>

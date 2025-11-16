@@ -16,7 +16,7 @@ export default function MyPropertiesPage() {
     error,
   } = useApi({
     url: user?._id ? `/api/properties/user/${user._id}` : null,
-    deps: [user?._id],
+    deps: [user?._id, location.search],
   });
 
   if (error)
@@ -34,11 +34,7 @@ export default function MyPropertiesPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties?.map((property) => (
-            <PropertyCard
-              property={property}
-              key={property._id}
-              
-            />
+            <PropertyCard property={property} key={property._id} />
           ))}
         </div>
       )}

@@ -53,6 +53,11 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
       if (photo) {
         photoURL = await photoUploadToCloudinary(photo);
       }
+      if (photoURL === null) {
+        return toast.error(
+          "Invalid Img Type...allowed only jpg,jpeg,png,webp,gif."
+        );
+      }
       const res = await axios.patch(
         `${import.meta.env.VITE_API_BASE_URL}/api/properties/${property._id}`,
         {
@@ -243,7 +248,12 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
               <label className="label">
                 <span className="label-text font-medium">Image</span>
               </label>
-              <input type="file" name="photo" className="file-input" />
+              <input
+                type="file"
+                name="photo"
+                className="file-input"
+                accept="image/*"
+              />
             </div>
 
             {/* Description */}

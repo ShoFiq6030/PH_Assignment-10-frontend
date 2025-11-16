@@ -3,6 +3,13 @@ import axios from "axios";
 export const photoUploadToCloudinary = async (photoFile) => {
     let photoURL = ""
     if (photoFile) {
+
+        const allowed = ["jpg", "jpeg", "png", "webp", "gif"];
+        const ext = photoFile.name.split(".").pop().toLowerCase();
+
+        if (!allowed.includes(ext)) {
+            return null
+        }
         const formData = new FormData();
         formData.append("file", photoFile);
         formData.append(

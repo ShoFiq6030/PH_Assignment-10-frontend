@@ -3,12 +3,13 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 
 import RootLayout from "../layout/RootLayout";
 import HomePage from "./../pages/HomePage";
-import NotFoundPage from "./../components/common/NotFoundPage";
+
 import AllPropertiesPage from "../pages/AllPropertiesPage";
 import PropertyDetailsPage from "./../pages/PropertyDetailsPage";
 import AddPropertiesPage from "../pages/AddPropertiesPage";
 import MyPropertiesPage from "../pages/MyPropertiesPage";
 import MyRatingsPage from "../pages/MyRatingsPage";
+import NotFoundPage from "./../pages/NotFoundPage";
 
 let router = createBrowserRouter([
   {

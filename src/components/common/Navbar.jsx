@@ -85,7 +85,7 @@ export default function Navbar() {
             // 🔹 Show Login / Signup
             <div
               className="flex items-center gap-4"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setOpenLoginModal(true)}
             >
               <button
                 onClick={() => setActiveTab("login")}
@@ -192,31 +192,31 @@ export default function Navbar() {
                 <Link
                   to="/login"
                   className="text-gray-700 hover:text-pink-600"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => setOpenLoginModal(false)}
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
                   className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => setOpenLoginModal(false)}
                 >
                   Sign Up
                 </Link>
               </>
             ) : (
               <>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 cursor-pointer hover:underline">
                   <img
                     src={user.photoURL || "https://i.pravatar.cc/30"}
                     alt="User"
                     className="h-8 w-8 rounded-full border"
                   />
-                  <span>{user.displayName || "User"}</span>
+                  <span>{user.name || "User"}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="text-red-600 font-medium text-left"
+                  className="text-red-600 font-medium text-left cursor-pointer"
                 >
                   Log out
                 </button>

@@ -13,7 +13,7 @@ export default function ForSellSection() {
   console.log(forSellData);
 
   return (
-    <div className=" my-10">
+    <div className=" my-10 container mx-auto">
       <div className="text-center flex flex-col gap-4 m-10">
         <h2 className="text-4xl font-bold">Properties for <span className="text-pink-500">Sale</span> </h2>
         <p>We provide full service at every step.</p>

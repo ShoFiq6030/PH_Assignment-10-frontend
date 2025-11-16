@@ -10,6 +10,7 @@ import {
   FaEdit,
   FaTrash,
   FaCar,
+  FaHeart,
 } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
 import { FiHeart } from "react-icons/fi";
@@ -18,6 +19,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import axios from "axios";
 import UpdatePropertyModal from "../updatePropertyModal/UpdatePropertyModal";
+import { useLoginModal } from "../../hooks/useLoginModal";
 
 export default function PropertyCard({ property = {} }) {
   const {
@@ -35,6 +37,8 @@ export default function PropertyCard({ property = {} }) {
   } = property;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const { openLoginModal, setOpenLoginModal } = useLoginModal();
 
   if (isDeleted) return null;
 
@@ -100,12 +104,24 @@ export default function PropertyCard({ property = {} }) {
       <div className="p-4">
         <div className="flex justify-between items-center">
           {" "}
-          <Link
-            to={`/all-properties/${_id}`}
-            className="font-semibold text-lg hover:underline cursor-pointer"
-          >
-            {propertyName}
-          </Link>
+          {user ? (
+            <Link
+              to={`/all-properties/${_id}`}
+              className="font-semibold text-lg hover:underline cursor-pointer"
+            >
+              {propertyName}
+            </Link>
+          ) : (
+            <h2
+              onClick={() => {
+                toast.error("Please Login!");
+                setOpenLoginModal(true);
+              }}
+              className="font-semibold text-lg hover:underline cursor-pointer"
+            >
+              {propertyName}
+            </h2>
+          )}
           {user?._id === property.userId && (
             <div className="flex gap-4 ">
               <button
@@ -137,7 +153,7 @@ export default function PropertyCard({ property = {} }) {
             <FaBath className="text-pink-600" /> {Bath} Baths
           </span>
           <span className="flex items-center gap-2">
-            <FaRulerCombined className="text-pink-600" /> {area}
+            <FaRulerCombined className="text-pink-600" /> {area} sq. ft.
           </span>
           <div className="flex items-center">
             <FaCar className="text-pink-500 mr-2 w-5 h-5" />
@@ -150,10 +166,22 @@ export default function PropertyCard({ property = {} }) {
           <p className="text-lg font-semibold text-gray-800">
             ${formattedPrice}
           </p>
-          <div className="flex items-center gap-4 text-gray-500">
-            <button className="hover:text-red-500">
-              <FiHeart size={23} />
-            </button>
+          <div className="flex items-center gap-4 text-gray-500 ">
+            {isLiked ? (
+              <button
+                onClick={() => setIsLiked(false)}
+                className=" text-red-600 cursor-pointer"
+              >
+                <FaHeart size={23} />
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLiked(true)}
+                className="hover:text-red-500 cursor-pointer"
+              >
+                <FiHeart size={23} />
+              </button>
+            )}
           </div>
         </div>
       </div>

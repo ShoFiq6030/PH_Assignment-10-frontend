@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { photoUploadToCloudinary } from "../../utils/uploadImgToCloudinary";
 
 export default function AddPropertyModal({ onClose }) {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ export default function AddPropertyModal({ onClose }) {
     Bedrooms: "",
     Bath: "",
     Garages: "",
+    area:""
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,24 +35,49 @@ export default function AddPropertyModal({ onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newFormData = {
-      ...formData,
-      userId: user._id,
-      userName: user.name,
-      userEmail: user.email,
-    };
-    // console.log(newFormData);
+
     setLoading(true);
+
     try {
+      // 1️⃣ Validate image
+      if (!formData.image || !formData.image.type.startsWith("image/")) {
+        toast.error("Please upload a valid image file.");
+        setLoading(false);
+        return;
+      }
+
+      // 2️⃣ Upload to Cloudinary
+      const imageUrl = await photoUploadToCloudinary(formData.image);
+
+      if (!imageUrl) {
+        toast.error("Image upload failed");
+        setLoading(false);
+        return;
+      }
+
+      // 3️⃣ Create new data payload
+      const newFormData = {
+        ...formData,
+        image: imageUrl, // Replaced with Cloudinary URL
+        userId: user._id,
+        userName: user.name,
+        userEmail: user.email,
+      };
+
+      // 4️⃣ Send to backend
       const token = localStorage.getItem("token");
-      const res = await axios.post(
+
+      await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/properties`,
         newFormData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
       toast.success("Property added successfully!");
+
+      // 5️⃣ Reset form
       setFormData({
         propertyName: "",
         description: "",
@@ -62,10 +89,11 @@ export default function AddPropertyModal({ onClose }) {
         Bedrooms: "",
         Bath: "",
         Garages: "",
+        area:""
       });
-      navigate("/my-properties");
+
+      navigate("/my-properties?refresh=" + Date.now());
       onClose();
-      // console.log(formData);
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Failed to add property");
@@ -132,16 +160,20 @@ export default function AddPropertyModal({ onClose }) {
             className="border p-2 rounded"
             required
           />
-
-          <input
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-            placeholder="Image URL"
-            className="border p-2 rounded col-span-2"
-            required
-          />
+          <div className="flex flex-col">
+            <label className="label">
+              <span className="label-text font-medium">Image</span>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
+              }
+              className="file-input"
+              required
+            />
+          </div>
 
           <textarea
             name="description"
@@ -183,6 +215,14 @@ export default function AddPropertyModal({ onClose }) {
             value={formData.Garages}
             onChange={handleChange}
             placeholder="Garages"
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            name="area"
+            value={formData.area}
+            onChange={handleChange}
+            placeholder="Area"
             className="border p-2 rounded"
           />
 

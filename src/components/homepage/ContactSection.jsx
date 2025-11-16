@@ -5,6 +5,7 @@ import {
   FaEnvelope,
   FaClock,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 /**
  * Helper component for individual contact info items
@@ -47,7 +48,10 @@ export default function ContactSection() {
     "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=70&w=1080";
   const cardBgUrl =
     "https://images.unsplash.com/photo-1580489944761-15a1906941b2?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"; // Support agent
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    toast.success("Submit Successfully");
+  };
   return (
     <section
       className="relative py-20 bg-cover bg-center"
@@ -63,7 +67,7 @@ export default function ContactSection() {
             Ready to get started?
           </h2>
           <div className="w-20 h-1 bg-white mb-8"></div>
-          <form className="flex flex-col gap-5">
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <FormInput placeholder="Your Name" />
             <FormInput type="tel" placeholder="Phone Number" />
             <FormInput type="email" placeholder="Your Email" />
@@ -71,7 +75,7 @@ export default function ContactSection() {
 
             <button
               type="submit"
-              className="bg-pink-600 text-white font-semibold py-3 px-8 rounded-md hover:bg-pink-700 transition-colors w-fit"
+              className="bg-pink-600 text-white font-semibold py-3 px-8 rounded-md hover:bg-pink-700 transition-colors w-fit cursor-pointer"
             >
               Send Message
             </button>
