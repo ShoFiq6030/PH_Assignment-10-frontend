@@ -18,7 +18,7 @@ export default function AddPropertyModal({ onClose }) {
     Bedrooms: "",
     Bath: "",
     Garages: "",
-    area:""
+    area: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -39,14 +39,14 @@ export default function AddPropertyModal({ onClose }) {
     setLoading(true);
 
     try {
-      // 1️⃣ Validate image
+      // Validate image
       if (!formData.image || !formData.image.type.startsWith("image/")) {
         toast.error("Please upload a valid image file.");
         setLoading(false);
         return;
       }
 
-      // 2️⃣ Upload to Cloudinary
+      //  Upload to Cloudinary
       const imageUrl = await photoUploadToCloudinary(formData.image);
 
       if (!imageUrl) {
@@ -55,7 +55,7 @@ export default function AddPropertyModal({ onClose }) {
         return;
       }
 
-      // 3️⃣ Create new data payload
+      //  Create new data payload
       const newFormData = {
         ...formData,
         image: imageUrl, // Replaced with Cloudinary URL
@@ -64,7 +64,7 @@ export default function AddPropertyModal({ onClose }) {
         userEmail: user.email,
       };
 
-      // 4️⃣ Send to backend
+      //  Send to backend
       const token = localStorage.getItem("token");
 
       await axios.post(
@@ -77,7 +77,7 @@ export default function AddPropertyModal({ onClose }) {
 
       toast.success("Property added successfully!");
 
-      // 5️⃣ Reset form
+      //  Reset form
       setFormData({
         propertyName: "",
         description: "",
@@ -89,7 +89,7 @@ export default function AddPropertyModal({ onClose }) {
         Bedrooms: "",
         Bath: "",
         Garages: "",
-        area:""
+        area: "",
       });
 
       navigate("/my-properties?refresh=" + Date.now());
@@ -150,6 +150,7 @@ export default function AddPropertyModal({ onClose }) {
             placeholder="Price"
             className="border p-2 rounded"
             required
+            min={0}
           />
           <input
             type="text"
@@ -192,6 +193,8 @@ export default function AddPropertyModal({ onClose }) {
             onChange={handleChange}
             placeholder="Total Rooms"
             className="border p-2 rounded"
+            required
+            min={0}
           />
           <input
             type="number"
@@ -200,6 +203,8 @@ export default function AddPropertyModal({ onClose }) {
             onChange={handleChange}
             placeholder="Bedrooms"
             className="border p-2 rounded"
+            required
+            min={0}
           />
           <input
             type="number"
@@ -208,6 +213,8 @@ export default function AddPropertyModal({ onClose }) {
             onChange={handleChange}
             placeholder="Bathrooms"
             className="border p-2 rounded"
+            required
+            min={0}
           />
           <input
             type="number"
@@ -216,14 +223,18 @@ export default function AddPropertyModal({ onClose }) {
             onChange={handleChange}
             placeholder="Garages"
             className="border p-2 rounded"
+            required
+            min={0}
           />
           <input
-            type="text"
+            type="number"
             name="area"
             value={formData.area}
             onChange={handleChange}
-            placeholder="Area"
+            placeholder="Area (square feet)"
             className="border p-2 rounded"
+            required
+            min={0}
           />
 
           <button

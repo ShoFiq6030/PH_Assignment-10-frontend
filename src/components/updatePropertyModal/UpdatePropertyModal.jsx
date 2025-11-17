@@ -15,6 +15,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
     Garages: "",
     location: "",
     image: "",
+    area: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
         Garages: property.Garages || "",
         location: property.location || "",
         image: property.image || "",
+        area: property.area || "",
       });
     }
   }, [property, isOpen]);
@@ -162,7 +164,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
               {/* Rooms */}
               <div>
                 <label className="label">
-                  <span className="label-text font-medium">Total Rooms</span>
+                  <span className="label-text font-medium">Rooms</span>
                 </label>
                 <input
                   type="number"
@@ -170,7 +172,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
                   value={formData.Rooms}
                   onChange={handleChange}
                   className="input input-bordered w-full"
-                  min="1"
+                  min="0"
                 />
               </div>
 
@@ -201,7 +203,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
                   onChange={handleChange}
                   className="input input-bordered w-full"
                   min="0"
-                  step="0.5"
+                  // step="0.5"
                 />
               </div>
 
@@ -214,6 +216,22 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
                   type="number"
                   name="Garages"
                   value={formData.Garages}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                  min="0"
+                />
+              </div>
+              {/* Area */}
+              <div>
+                <label className="label">
+                  <span className="label-text font-medium">
+                    Area (square feet)
+                  </span>
+                </label>
+                <input
+                  type="number"
+                  name="area"
+                  value={formData.area}
                   onChange={handleChange}
                   className="input input-bordered w-full"
                   min="0"
