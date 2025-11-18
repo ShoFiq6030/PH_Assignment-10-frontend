@@ -7,8 +7,10 @@ import {
   FaTrophy,
 } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
+import { useTheme } from "./../../hooks/useTheme";
 
 export default function WhyChooseUs() {
+  const { theme } = useTheme();
   const features = [
     {
       icon: <FaHome className="text-5xl text-pink-500 mb-4" />,
@@ -51,13 +53,25 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="bg-gray-50 py-16 px-6 md:px-20">
+    <section
+      className={` ${
+        theme === "dark" ? "bg-gray-600 text-white" : "bg-gray-50"
+      } py-16 px-6 md:px-20`}
+    >
       {/* Header */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2
+          className={`text-3xl font-bold  ${
+            theme === "dark" ? " text-white" : "text-gray-900"
+          }`}
+        >
           WHY <span className="text-pink-500">CHOOSE US</span>
         </h2>
-        <p className="text-gray-500 mt-2">
+        <p
+          className={`${
+            theme === "dark" ? "text-white" : "text-gray-500"
+          } mt-2`}
+        >
           We provide full service at every step.
         </p>
       </div>
@@ -67,11 +81,19 @@ export default function WhyChooseUs() {
         {features.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white p-8 rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col items-center justify-center "
+            className={`${
+              theme === "dark" ? "bg-gray-400" : "bg-white"
+            } p-8 rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col items-center justify-center `}
           >
             <div className="">{item.icon}</div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+            <p
+              className={`${
+                theme == "dark" ? "text-white" : "text-gray-500"
+              } text-sm leading-relaxed`}
+            >
+              {item.desc}
+            </p>
           </div>
         ))}
       </div>

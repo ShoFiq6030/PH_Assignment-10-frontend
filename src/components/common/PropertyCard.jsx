@@ -21,6 +21,7 @@ import axios from "axios";
 import UpdatePropertyModal from "../updatePropertyModal/UpdatePropertyModal";
 import { useLoginModal } from "../../hooks/useLoginModal";
 import ConfirmModal from "./ConfirmModal";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function PropertyCard({ property = {}, featured = false }) {
   const {
@@ -41,6 +42,7 @@ export default function PropertyCard({ property = {}, featured = false }) {
   const [isLiked, setIsLiked] = useState(false);
   const { openLoginModal, setOpenLoginModal } = useLoginModal();
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const { theme } = useTheme();
 
   if (isDeleted) return null;
 
@@ -68,7 +70,11 @@ export default function PropertyCard({ property = {}, featured = false }) {
   const formattedPrice = price?.toLocaleString();
 
   return (
-    <div className="bg-white  max-w-[400px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+    <div
+      className={` ${
+        theme === "dark" && "bg-gray-500"
+      }  max-w-[400px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300`}
+    >
       {isModalOpen && (
         <UpdatePropertyModal
           isOpen={isModalOpen}
@@ -122,7 +128,9 @@ export default function PropertyCard({ property = {}, featured = false }) {
           {user ? (
             <Link
               to={`/all-properties/${_id}`}
-              className="font-semibold text-lg hover:underline cursor-pointer"
+              className={`font-semibold text-lg ${
+                theme === "dark" ? "text-white" : "text-black"
+              } hover:underline cursor-pointer`}
             >
               {propertyName}
             </Link>
@@ -155,12 +163,20 @@ export default function PropertyCard({ property = {}, featured = false }) {
           )}
         </div>
 
-        <p className="flex items-center text-sm text-gray-500 mt-1">
+        <p
+          className={`flex items-center text-sm ${
+            theme === "dark" ? "text-white" : "text-gray-500"
+          } mt-1`}
+        >
           <FaMapMarkerAlt className="mr-2 text-pink-600" /> {location}
         </p>
 
         {/* Info Icons */}
-        <div className="flex justify-between items-center text-sm text-gray-600 border-b mt-3 pb-3">
+        <div
+          className={`flex justify-between items-center text-sm ${
+            theme === "dark" ? "text-white" : "text-gray-500"
+          } border-b mt-3 pb-3`}
+        >
           <span className="flex items-center gap-2">
             <FaBed className="text-pink-600" /> {Bedrooms} Beds
           </span>
@@ -178,10 +194,14 @@ export default function PropertyCard({ property = {}, featured = false }) {
 
         {/* Price and Actions */}
         <div className="flex justify-between items-center mt-4">
-          <p className="text-lg font-semibold text-gray-800">
+          <p
+            className={`text-lg font-semibold  ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            }`}
+          >
             ${formattedPrice}
           </p>
-          <div className="flex items-center gap-4 text-gray-500 ">
+          <div className="flex items-center gap-4 text-black ">
             {isLiked ? (
               <button
                 onClick={() => setIsLiked(false)}

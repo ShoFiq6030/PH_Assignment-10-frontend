@@ -4,15 +4,9 @@ import { Link } from "react-router";
 export default function NotFoundPage() {
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full">
-        <body class="h-full">
-        ```
-      */}
-      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div
+        className={`grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8`}
+      >
         <div className="text-center">
           <p className="text-8xl font-semibold text-pink-600">404</p>
           <h1 className="mt-4 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
@@ -30,7 +24,7 @@ export default function NotFoundPage() {
             </Link>
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { photoUploadToCloudinary } from "../../utils/uploadImgToCloudinary";
+import { useTheme } from "../../hooks/useTheme";
 
 // Helper component for Form Inputs
 
@@ -40,6 +41,7 @@ export default function LoginAndRegistration({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user, setUser, login, logout, authLoading, googleSignin } = useAuth();
+  const { theme } = useTheme();
 
   if (!isOpen) return null;
 
@@ -179,7 +181,9 @@ export default function LoginAndRegistration({
     >
       {/* 2. Modal Content */}
       <div
-        className="relative bg-white w-full max-w-md p-8 rounded-lg shadow-xl"
+        className={`relative  ${
+          theme === "dark" ? "bg-gray-400 " : "bg-white"
+        } w-full max-w-md p-8 rounded-lg shadow-xl`}
         onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicking inside
       >
         {/* 3. Close Button */}
@@ -301,7 +305,9 @@ export default function LoginAndRegistration({
               <FormInput label="Name" id="name" />
               <FormInput label="Email Address" id="email" />
               <fieldset className="fieldset pb-4">
-                <legend className="fieldset-legend">Photo<span className="text-red-500">*</span></legend>
+                <legend className="fieldset-legend">
+                  Photo<span className="text-red-500">*</span>
+                </legend>
                 <input
                   type="file"
                   className="file-input"

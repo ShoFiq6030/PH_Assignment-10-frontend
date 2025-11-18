@@ -4,6 +4,7 @@ import PropertyCard from "../components/common/PropertyCard";
 import Loading from "../components/common/Loading";
 
 import PropertyFilters from "../components/AllPropertiesPage/PropertyFilters";
+import { useTheme } from "../hooks/useTheme";
 
 export default function AllPropertiesPage() {
   const [active, setActive] = useState("All");
@@ -15,9 +16,9 @@ export default function AllPropertiesPage() {
   const [bath, setBath] = useState("");
   const [garage, setGarage] = useState("");
   const [sortBy, setSortBy] = useState("");
-// const [filtering, setFiltering] = useState(false);
-
-const {
+  // const [filtering, setFiltering] = useState(false);
+  const { theme } = useTheme();
+  const {
     data = [],
     loading,
     error,
@@ -30,7 +31,6 @@ const {
 
   const filteredProperties = data
     ?.filter((property) => {
-    
       if (active !== "All" && property.category !== active) return false;
       if (
         search &&
@@ -42,7 +42,6 @@ const {
       if (bath && property.Bath < Number(bath)) return false;
       if (garage && property.Garages < Number(garage)) return false;
       return true;
-      
     })
     ?.sort((a, b) => {
       if (sortBy === "low-high") return a.price - b.price;
@@ -50,13 +49,13 @@ const {
       return 0;
     });
 
-    const handleFilterChange = (callback) => {
-  setFiltering(true); 
-  setTimeout(() => {
-    callback();      
-    setFiltering(false);
-  }, 1000); 
-};
+  const handleFilterChange = (callback) => {
+    setFiltering(true);
+    setTimeout(() => {
+      callback();
+      setFiltering(false);
+    }, 1000);
+  };
 
   if (error)
     return (
@@ -66,10 +65,14 @@ const {
     );
 
   return (
-    <section className="px-6 py-10">
+    <section className={`px-6 py-10 ${theme === "dark" && "bg-gray-600"}`}>
       {/* Page Header */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-semibold text-gray-800">
+        <h1
+          className={`text-3xl font-semibold ${
+            theme === "dark" ? "text-white" : "text-gray-800"
+          }`}
+        >
           Find Your Dream Property
         </h1>
         <p className="text-gray-500 mt-2">
@@ -86,8 +89,8 @@ const {
             className={`px-6 py-2 rounded-md transition-all duration-200 ${
               active === category
                 ? "bg-pink-600 text-white border border-pink-600"
-                : "text-gray-700 hover:text-pink-600"
-            }`}
+                : " hover:text-pink-600"
+            } ${theme === "dark" ? "text-white" : "text-gray-700"}`}
           >
             {category}
           </button>
@@ -112,7 +115,7 @@ const {
       />
 
       {/* Property List */}
-      {loading  ? (
+      {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[200px]">
           <Loading />
         </div>

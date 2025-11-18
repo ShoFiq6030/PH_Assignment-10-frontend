@@ -13,9 +13,11 @@ import Loading from "../components/common/Loading";
 import PropertyReviews from "../components/PropertyDetailsPage/PropertyReviews";
 import ReviewForm from "../components/PropertyDetailsPage/ReviweForm";
 import PropertyReviewFormAndCard from "../components/PropertyDetailsPage/PropertyReviewFormAndCard";
+import { useTheme } from "../hooks/useTheme";
 
 export default function PropertyDetailsPage() {
   const { id } = useParams();
+  const { theme } = useTheme();
 
   const {
     data = {},
@@ -58,14 +60,26 @@ export default function PropertyDetailsPage() {
           alt={propertyName}
           className="w-full h-[400px] object-cover  shadow-md"
         />
-        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-3  shadow-md">
+        <div
+          className={`absolute bottom-6 left-6  ${
+            theme === "dark" ? "bg-gray-400 " : "bg-white/90"
+          } px-6 py-3  shadow-md`}
+        >
           <span className="bg-pink-200 text-pink-600 px-3 py-1 text-sm  font-semibold">
             {category}
           </span>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1
+            className={`text-2xl font-semibold ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            } `}
+          >
             {propertyName}
           </h1>
-          <p className="text-gray-500 flex items-center gap-2 mt-1">
+          <p
+            className={` ${
+              theme === "dark" ? "text-white" : "text-gray-500"
+            } flex items-center gap-2 mt-1`}
+          >
             <FaMapMarkerAlt className="text-pink-600" /> {location}
           </p>
         </div>
@@ -76,7 +90,11 @@ export default function PropertyDetailsPage() {
         {/* Left: Property Info */}
         <div className="lg:col-span-2 space-y-6">
           {/* Info Row */}
-          <div className="flex flex-wrap gap-6 text-gray-700 border-b pb-4">
+          <div
+            className={`flex flex-wrap gap-6 ${
+              theme === "dark" ? "text-white" : "text-gray-700"
+            }  border-b pb-4`}
+          >
             <div className="flex items-center gap-2">
               <FaRulerCombined className="text-pink-600" />{" "}
               <span>{Rooms} Rooms</span>
@@ -95,20 +113,24 @@ export default function PropertyDetailsPage() {
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+            <h2
+              className={`text-xl font-semibold ${
+                theme === "dark" ? "text-white" : "text-gray-800"
+              }  mb-3`}
+            >
               Property Description
             </h2>
-            <p className="text-gray-600 leading-relaxed">{description}</p>
+            <p className={` ${theme==="dark"?"text-white":"text-gray-600"} leading-relaxed`}>{description}</p>
           </div>
 
           {/* Price */}
-          <div className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow-sm">
+          <div className={`flex items-center justify-between ${theme==="dark"? "bg-gray-700":"bg-gray-100"}  p-4 rounded-lg shadow-sm`}>
             <p className="text-2xl font-bold text-pink-600">${price}</p>
           </div>
         </div>
 
         {/* Right: Agent Info */}
-        <aside className="bg-white shadow-md  p-6 border">
+        <aside className={` ${theme==="dark"?'bg-gray-400':"bg-white"} shadow-md  p-6 border`}>
           <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
             Agent Information
           </h3>
@@ -127,8 +149,7 @@ export default function PropertyDetailsPage() {
           </button>
         </aside>
       </div>
-<PropertyReviewFormAndCard propertyId={id}/>
-      
+      <PropertyReviewFormAndCard propertyId={id} />
     </section>
   );
 }

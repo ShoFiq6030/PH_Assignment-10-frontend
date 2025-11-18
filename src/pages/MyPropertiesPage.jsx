@@ -7,9 +7,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import PropertyCard from "../components/common/PropertyCard";
 import ConfirmModal from "../components/common/ConfirmModal";
+import { useTheme } from "../hooks/useTheme";
 
 export default function MyPropertiesPage() {
   const { user, authLoading } = useAuth();
+  const {theme}=useTheme()
   
 
   const {

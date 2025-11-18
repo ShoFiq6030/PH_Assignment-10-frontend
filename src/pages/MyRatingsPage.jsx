@@ -14,7 +14,7 @@ export default function MyRatingsPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-6">My Ratings</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-center">My Ratings</h1>
 
       {error && <p className="text-red-500">Something went wrong.</p>}
 

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import ReviewForm from "./ReviweForm";
 import PropertyReviews from "./PropertyReviews";
 import { useApi } from "../../hooks/useApi";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function PropertyReviewFormAndCard({ propertyId }) {
+  const {theme}=useTheme()
   const {
     data = [],
     loading,

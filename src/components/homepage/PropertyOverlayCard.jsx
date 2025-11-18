@@ -7,10 +7,12 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { Link } from "react-router";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function PropertyOverlayCard({ property }) {
   // Destructure with defaults
-  console.log(property);
+  // console.log(property);
+  const { theme, setTheme } = useTheme();
   const {
     category = "FOR SALE",
     propertyName = "House Luxury Villa",
@@ -27,7 +29,7 @@ export default function PropertyOverlayCard({ property }) {
   const formattedPrice = price?.toLocaleString();
 
   return (
-    <div className="relative lg:w-full h-40 max-w-sm mr-10  ">
+    <div className={`relative lg:w-full h-40 max-w-sm mr-10  `}>
       {/* FOR SALE Tag */}
       <div className="absolute -top-3 left-4 z-10 ">
         <span className="bg-pink-600 text-white uppercase text-xs font-semibold tracking-wider px-4 py-1 ">
@@ -37,14 +39,19 @@ export default function PropertyOverlayCard({ property }) {
 
       {/* Main Card */}
       <div
-        className="md:bg-white bg-gray-200/50  p-6    shadow-lg flex flex-col lg:gap-3
-                   "
+        className={` bg-gray-200/50  p-6 ${
+          theme === "dark" ? "md:bg-gray-600 text-white" : "md:bg-white"
+        } shadow-lg flex flex-col lg:gap-3`}
       >
         {/* Title */}
         <h2 className="text-xl font-extrabold mb-1">{propertyName}</h2>
 
         {/* Location */}
-        <div className="flex items-center lg:text-gray-700 lg:mb-4">
+        <div
+          className={`flex items-center ${
+            theme === "dark" ? "lg:text-white" : "lg:text-gray-700"
+          }  lg:mb-4`}
+        >
           <FaMapMarkerAlt className="text-pink-500 mr-2 w-4 h-4" />
           <span className="text-sm">{location}</span>
         </div>
@@ -52,7 +59,11 @@ export default function PropertyOverlayCard({ property }) {
         <hr className="my-3 border-gray-200" />
 
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-y-4 gap-x-3 lg:text-gray-700 text-sm">
+        <div
+          className={`grid grid-cols-2 gap-y-4 gap-x-3 ${
+            theme === "dark" ? "lg:text-white" : "lg:text-gray-700"
+          } text-sm`}
+        >
           <div className="flex items-center">
             <FaBed className="text-pink-500 mr-2 w-5 h-5" />
             <span>{Bedrooms} Bedrooms</span>

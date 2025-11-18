@@ -1,12 +1,14 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { useTheme } from "./../../hooks/useTheme";
 
 const PopularPlaceCard = ({ city, propertiesCount, rating = 4, imageUrl }) => {
+  const { theme } = useTheme();
   return (
     <div
-      className="relative h-64 bg-cover bg-center rounded-lg shadow-lg overflow-hidden
-                 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-      style={{ backgroundImage: `url(${imageUrl})` }}
+      className={`relative h-64 bg-cover bg-center rounded-lg shadow-lg overflow-hidden
+                 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl  `}
+      style={{ backgroundImage: `url(${imageUrl}) ` }}
     >
       {/* Overlay for text readability */}
       <div className="absolute inset-0 bg-black/40  flex flex-col justify-end p-5">

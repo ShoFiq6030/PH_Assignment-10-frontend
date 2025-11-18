@@ -1,5 +1,6 @@
 // components/common/PropertyFilter.jsx
 import React from "react";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function PropertyFilters({
   search,
@@ -16,8 +17,13 @@ export default function PropertyFilters({
   setSortBy,
   handleFilterChange,
 }) {
+  const { theme } = useTheme();
   return (
-    <div className="bg-white shadow p-4 rounded-lg mb-6">
+    <div
+      className={` ${
+        theme === "dark" ? "bg-gray-400" : "bg-white"
+      } shadow p-4 rounded-lg mb-6 `}
+    >
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
         {/* Search */}
         <input

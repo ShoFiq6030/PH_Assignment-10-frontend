@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { photoUploadToCloudinary } from "../../utils/uploadImgToCloudinary";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function AddPropertyModal({ onClose }) {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export default function AddPropertyModal({ onClose }) {
   });
 
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme();
 
   //   if (!isOpen) return null;
 
@@ -104,7 +106,11 @@ export default function AddPropertyModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-white w-full max-w-2xl  shadow-xl p-6 relative">
+      <div
+        className={` w-full max-w-2xl ${
+          theme === "dark" ? "bg-gray-700 text-white" : "bg-white"
+        } shadow-xl p-6 relative`}
+      >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Add New Property</h2>
@@ -134,7 +140,11 @@ export default function AddPropertyModal({ onClose }) {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className={`select select-bordered w-full ${
+              theme === "dark"
+                ? "bg-gray-800 text-white border-gray-700"
+                : "bg-white text-black"
+            }`}
           >
             <option value="Sale">For Sale</option>
             <option value="Rent">For Rent</option>
@@ -171,7 +181,11 @@ export default function AddPropertyModal({ onClose }) {
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
               }
-              className="file-input"
+              className={`file-input file-input-bordered w-full ${
+                theme === "dark"
+                  ? "bg-gray-800 text-white border-gray-600"
+                  : "bg-white text-gray-800 border-gray-300"
+              }`}
               required
             />
           </div>

@@ -6,16 +6,19 @@ import LoginAndRegistration from "../loginRegistration/LoginAndRegistration";
 import { useAuth } from "../../hooks/useAuth";
 import AddPropertyModal from "./AddPropertyModal";
 import { useLoginModal } from "./../../hooks/useLoginModal";
+import ThemeSwitcher from "./ThemeSwitcher";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, authLoading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddPropertyModalOpen, setIsAddPropertyModalOpen] = useState(false);
   const [showUserDropDown, setShowUserDropDown] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
   const { openLoginModal, setOpenLoginModal } = useLoginModal();
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -39,7 +42,11 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-white shadow-md  sticky top-0 z-50">
+    <nav
+      className={`w-full  ${
+        theme == "dark" ? "bg-gray-500" : "bg-white"
+      } shadow-md  sticky top-0 z-50`}
+    >
       {isAddPropertyModalOpen && (
         <AddPropertyModal onClose={() => setIsAddPropertyModalOpen(false)} />
       )}
@@ -60,7 +67,11 @@ export default function Navbar() {
         </Link>
 
         {/* ✅ Desktop Menu */}
-        <ul className="hidden md:flex items-center space-x-6 text-gray-700 font-medium">
+        <ul
+          className={`hidden md:flex items-center space-x-6 ${
+            theme === "dark" ? "text-white" : "text-gray-700"
+          }  font-medium`}
+        >
           {navItems.map((item) =>
             !item.private || (item.private && user) ? (
               <li key={item.name}>
@@ -80,86 +91,97 @@ export default function Navbar() {
         </ul>
 
         {/* ✅ Right Side */}
-        <div className="hidden md:flex items-center space-x-4">
-          {!user ? (
-            // 🔹 Show Login / Signup
-            <div
-              className="flex items-center gap-4"
-              onClick={() => setOpenLoginModal(true)}
-            >
-              <button
-                onClick={() => setActiveTab("login")}
-                className="text-gray-700 hover:text-pink-600 transition"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setActiveTab("register")}
-                className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-              >
-                Sign Up
-              </button>
-            </div>
-          ) : (
-            // 🔹 Logged-in dropdown
-            <div className="relative group">
+        <div className="flex">
+          <div className="mx-5"> <ThemeSwitcher /></div>
+         
+          <div className="hidden md:flex items-center space-x-4">
+            {!authLoading && !user ? (
+              // 🔹 Show Login / Signup
               <div
-                className="flex items-center space-x-2 cursor-pointer"
-                onClick={() => setShowUserDropDown(!showUserDropDown)}
+                className="flex items-center gap-4"
+                onClick={() => setOpenLoginModal(true)}
               >
-                {user.photoURL ? (
-                  <img
-                    src={user.photoURL || "https://i.pravatar.cc/40"}
-                    alt="User"
-                    className="h-9 w-9 rounded-full border"
+                <button
+                  onClick={() => setActiveTab("login")}
+                  className={` ${
+                    theme === "dark" ? "text-white" : "text-gray-700"
+                  } hover:text-pink-600 transition`}
+                >
+                  Login
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("register")}
+                  className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
+                >
+                  Sign Up
+                </button>
+              </div>
+            ) : (
+              // 🔹 Logged-in dropdown
+              <div className="relative group">
+                <div
+                  className="flex items-center space-x-2 cursor-pointer"
+                  onClick={() => setShowUserDropDown(!showUserDropDown)}
+                >
+                  {user?.photoURL ? (
+                    <img
+                      src={user?.photoURL || "https://i.pravatar.cc/40"}
+                      alt="User"
+                      className="h-9 w-9 rounded-full border"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
+                      <FaUser className="text-pink-600 text-xl" />
+                    </div>
+                  )}
+
+                  <FaChevronDown
+                    size={12}
+                    className={`text-gray-600 transition-transform ${
+                      showUserDropDown ? "rotate-180" : ""
+                    }`}
                   />
-                ) : (
-                  <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
-                    <FaUser className="text-pink-600 text-xl" />
+                </div>
+
+                {showUserDropDown && (
+                  <div className="absolute right-0 mt-3 bg-white rounded-lg shadow-md border w-48 p-3 text-sm">
+                    <Link
+                      to={`/profile/${user._id}`}
+                      className="font-medium text-gray-800 truncate cursor-pointer hover:underline"
+                      onClick={() => setShowUserDropDown(false)}
+                    >
+                      {user.name || "User"}
+                    </Link>
+
+                    <p className="text-gray-500 text-xs mb-2 truncate">
+                      {user.email}
+                    </p>
+
+                    <hr className="my-2" />
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left text-red-600 hover:text-red-700 font-medium cursor-pointer"
+                    >
+                      Log out
+                    </button>
                   </div>
                 )}
-
-                <FaChevronDown
-                  size={12}
-                  className={`text-gray-600 ${
-                    showUserDropDown && "rotate-180"
-                  } transition-transform`}
-                />
               </div>
-              {showUserDropDown && (
-                <div className="absolute right-0 mt-3   bg-white rounded-lg shadow-md border w-48 p-3 text-sm">
-                  <Link
-                    to={`/profile/${user._id}`}
-                    className="font-medium text-gray-800 truncate cursor-pointer hover:underline"
-                    onClick={() => setShowUserDropDown(false)}
-                  >
-                    {user.name || "User"}
-                  </Link>
-                  <p className="text-gray-500 text-xs mb-2 truncate">
-                    {user.email}
-                  </p>
-                  <hr className="my-2" />
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left text-red-600 hover:text-red-700 font-medium cursor-pointer"
-                  >
-                    Log out
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
 
-          {/* ✅ Add Property Button (always visible for logged in users) */}
-          {user && (
-            <button
-              className="flex items-center space-x-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-              onClick={handleAddPropertyModal}
-            >
-              <FaPlus />
-              <span>Add Property</span>
-            </button>
-          )}
+            {/* ✅ Add Property Button (always visible for logged in users) */}
+            {user && (
+              <button
+                className="flex items-center space-x-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
+                onClick={handleAddPropertyModal}
+              >
+                <FaPlus />
+                <span>Add Property</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* ✅ Mobile Menu Button */}

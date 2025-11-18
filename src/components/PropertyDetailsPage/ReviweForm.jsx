@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "./../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useLoginModal } from "../../hooks/useLoginModal";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function ReviewForm({ propertyId, setReviewData, reviewData }) {
   const [rating, setRating] = useState(0);
@@ -13,6 +14,7 @@ export default function ReviewForm({ propertyId, setReviewData, reviewData }) {
   const [message, setMessage] = useState("");
   const { user } = useAuth();
   const { openLoginModal, setOpenLoginModal } = useLoginModal();
+  const { theme } = useTheme();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,8 +66,16 @@ export default function ReviewForm({ propertyId, setReviewData, reviewData }) {
   };
 
   return (
-    <div className="bg-white  shadow-md p-6 mt-10 border border-gray-100">
-      <h3 className="text-2xl font-semibold text-gray-800 mb-5">
+    <div
+      className={` ${
+        theme === "dark" ? "bg-gray-700" : "bg-white"
+      } shadow-md p-6 mt-10 border border-gray-100`}
+    >
+      <h3
+        className={`text-2xl font-semibold  ${
+          theme === "dark" ? "text-white" : "text-gray-800"
+        }  mb-5`}
+      >
         Write a Review
       </h3>
 
@@ -101,7 +111,9 @@ export default function ReviewForm({ propertyId, setReviewData, reviewData }) {
           placeholder="Write your review here..."
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
-          className="w-full border border-gray-300 rounded-xl p-3 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
+          className={`w-full border border-gray-300 rounded-xl p-3 ${
+            theme == "dark" ? "text-white" : "text-gray-700"
+          } focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none`}
         />
 
         {/* Submit Button */}
