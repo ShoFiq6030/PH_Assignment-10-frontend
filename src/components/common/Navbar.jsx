@@ -92,8 +92,11 @@ export default function Navbar() {
 
         {/* ✅ Right Side */}
         <div className="flex">
-          <div className="mx-5"> <ThemeSwitcher /></div>
-         
+          <div className="mx-5">
+            {" "}
+            <ThemeSwitcher />
+          </div>
+
           <div className="hidden md:flex items-center space-x-4">
             {!authLoading && !user ? (
               // 🔹 Show Login / Signup
@@ -203,33 +206,47 @@ export default function Navbar() {
                   <NavLink
                     to={item.path}
                     onClick={() => setMenuOpen(false)}
-                    className="block hover:text-pink-600 transition"
+                    className={({ isActive }) =>
+                      `hover:text-pink-600 transition ${
+                        isActive ? "text-pink-600" : ""
+                      }`
+                    }
                   >
                     {item.name}
                   </NavLink>
                 </li>
               ) : null
             )}
+            {user && (
+              <button
+                className="flex items-center space-x-2 bg-pink-600 text-white px-4 py-2 max-w-40 rounded-lg hover:bg-pink-700 transition"
+                onClick={handleAddPropertyModal}
+              >
+                <FaPlus />
+                <span>Add Property</span>
+              </button>
+            )}
 
             <hr className="my-2" />
 
             {!user ? (
-              <>
-                <Link
-                  to="/login"
+              <div
+                className="flex flex-col gap-4"
+                onClick={() => setOpenLoginModal(true)}
+              >
+                <button
                   className="text-gray-700 hover:text-pink-600"
-                  onClick={() => setOpenLoginModal(false)}
+                  onClick={() => setActiveTab("login")}
                 >
                   Login
-                </Link>
-                <Link
-                  to="/register"
+                </button>
+                <button
+                  onClick={() => setActiveTab("register")}
                   className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-                  onClick={() => setOpenLoginModal(false)}
                 >
                   Sign Up
-                </Link>
-              </>
+                </button>
+              </div>
             ) : (
               <>
                 <div className="flex items-center space-x-2 cursor-pointer hover:underline">
@@ -238,7 +255,7 @@ export default function Navbar() {
                     alt="User"
                     className="h-8 w-8 rounded-full border"
                   />
-                  <span>{user.name || "User"}</span>
+                  <Link to={`/profile/${user._id}`}>{user.name || "User"}</Link>
                 </div>
                 <button
                   onClick={handleLogout}
