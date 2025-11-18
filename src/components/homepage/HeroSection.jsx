@@ -15,7 +15,7 @@ export default function HeroSection() {
   useEffect(() => {
     if (!data || data.length === 0) return;
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % Math.min(data.length, 3));
+      setCurrent((prev) => (prev + 1) % Math.min(data.length, 5));
     }, 4000);
     return () => clearInterval(interval);
   }, [data]);
@@ -26,7 +26,7 @@ export default function HeroSection() {
 
   return (
     <div className="relative w-full h-[400px] md:h-[600px] lg:h-[80vh] overflow-hidden">
-      {data.slice(0, 3).map((property, index) => {
+      {data.slice(0, 5).map((property, index) => {
         const bgUrl =
           property.image ||
           "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e";

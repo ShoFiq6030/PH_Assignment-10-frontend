@@ -89,7 +89,11 @@ export default function PropertyOverlayCard({ property }) {
 
         {/* Price */}
         <div className="lg:mt-4">
-          <span className="text-2xl font-bold text-gray-900">
+          <span
+            className={`text-2xl font-bold ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            } `}
+          >
             ${formattedPrice}
           </span>
         </div>

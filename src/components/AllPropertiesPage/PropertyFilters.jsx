@@ -1,117 +1,129 @@
-// components/common/PropertyFilter.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../../hooks/useTheme";
+import { IoMdSearch } from "react-icons/io";
 
 export default function PropertyFilters({
   search,
   setSearch,
-  room,
-  setRoom,
-  bedroom,
-  setBedroom,
-  bath,
-  setBath,
-  garage,
-  setGarage,
-  sortBy,
-  setSortBy,
-  handleFilterChange,
+  sortByPrice,
+  setSortByPrice,
+  sortByTime,
+  setSortByTime,
 }) {
   const { theme } = useTheme();
+
+  // Dropdown open states
+  const [priceOpen, setPriceOpen] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(false);
+
+  // Handle click and stop event bubbling
+  const handlePriceSort = (value, e) => {
+    e.stopPropagation();
+    setSortByPrice(value);
+    setSortByTime("");
+    setPriceOpen(false);
+  };
+
+  const handleTimeSort = (value, e) => {
+    e.stopPropagation();
+    setSortByTime(value);
+    setSortByPrice("");
+    setTimeOpen(false);
+  };
+
+  // Close dropdown if user clicks outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setPriceOpen(false);
+      setTimeOpen(false);
+    };
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     <div
-      className={` ${
+      className={`${
         theme === "dark" ? "bg-gray-400" : "bg-white"
-      } shadow p-4 rounded-lg mb-6 `}
+      } shadow p-4 rounded-lg mb-6 w-full`}
+      onClick={(e) => e.stopPropagation()} // prevent bubbling from container
     >
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search by property name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-pink-500 p-2 rounded"
-        />
-
-        {/* Rooms */}
-        <input
-          type="number"
-          placeholder="Rooms"
-          value={room}
-          onChange={(e) => setRoom(e.target.value)}
-          className="border border-pink-500 p-2 rounded"
-        />
-
-        {/* Bedrooms */}
-        <input
-          type="number"
-          placeholder="Bedrooms"
-          value={bedroom}
-          onChange={(e) => setBedroom(e.target.value)}
-          className="border border-pink-500 p-2 rounded"
-        />
-
-        {/* Bathrooms */}
-        <input
-          type="number"
-          placeholder="Bathrooms"
-          value={bath}
-          onChange={(e) => setBath(e.target.value)}
-          className="border border-pink-500 p-2 rounded"
-        />
-
-        {/* Garages */}
-        <input
-          type="number"
-          placeholder="Garages"
-          value={garage}
-          onChange={(e) => setGarage(e.target.value)}
-          className="border border-pink-500 p-2 rounded"
-        />
-
-        {/* Sort by Price */}
-        <div className="dropdown dropdown-hover">
-          {/* Button */}
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn m-1 w-40 flex justify-between"
+      <div className="flex justify-between w-full gap-4 flex-wrap">
+        {/* Sort By Price */}
+        <div className="relative">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setPriceOpen(!priceOpen);
+            }}
+            className="btn w-40 flex justify-between"
           >
-            {sortBy === "low-high"
+            {sortByPrice === "asc"
               ? "Price: Low → High"
-              : sortBy === "high-low"
+              : sortByPrice === "desc"
               ? "Price: High → Low"
               : "Sort by Price 🔽"}
-          </div>
+          </button>
 
-          {/* Dropdown Items */}
-          <ul
-            tabIndex="-1"
-            className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-sm"
+          {priceOpen && (
+            <ul className="absolute menu bg-base-100 rounded-box z-50 w-52 p-2 shadow mt-1">
+              <li>
+                <a onClick={(e) => handlePriceSort("", e)}>Default</a>
+              </li>
+              <li>
+                <a onClick={(e) => handlePriceSort("asc", e)}>Low → High</a>
+              </li>
+              <li>
+                <a onClick={(e) => handlePriceSort("desc", e)}>High → Low</a>
+              </li>
+            </ul>
+          )}
+        </div>
+
+        {/* Sort By Time */}
+        <div className="relative">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setTimeOpen(!timeOpen);
+            }}
+            className="btn w-40 flex justify-between"
           >
-            <li>
-              <a onClick={() => setSortBy("")} className="cursor-pointer">
-                Default
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={() => setSortBy("low-high")}
-                className="cursor-pointer"
-              >
-                Low → High
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={() => setSortBy("high-low")}
-                className="cursor-pointer"
-              >
-                High → Low
-              </a>
-            </li>
-          </ul>
+            {sortByTime === "asc"
+              ? "Old → New"
+              : sortByTime === "desc"
+              ? "New → Old"
+              : "Sort by Time 🔽"}
+          </button>
+
+          {timeOpen && (
+            <ul className="absolute menu bg-base-100 rounded-box z-50 w-52 p-2 shadow mt-1">
+              <li>
+                <a onClick={(e) => handleTimeSort("", e)}>Default</a>
+              </li>
+              <li>
+                <a onClick={(e) => handleTimeSort("asc", e)}>Old → New</a>
+              </li>
+              <li>
+                <a onClick={(e) => handleTimeSort("desc", e)}>New → Old</a>
+              </li>
+            </ul>
+          )}
+        </div>
+
+        {/* Search Input */}
+        <div className="relative">
+          {" "}
+          <input
+            type="text"
+            placeholder="Search by property name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border border-pink-500 p-2 rounded max-w-60"
+          />
+          <div className="absolute top-2 right-2">
+            <IoMdSearch size={26} className="text-pink-600"/>
+          </div>
         </div>
       </div>
     </div>

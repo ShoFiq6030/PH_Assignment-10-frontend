@@ -32,7 +32,7 @@ export default function MyPropertiesPage() {
       {authLoading || loading ? (
         <Loading />
       ) : properties?.length === 0 ? (
-        <p className="text-gray-600 text-center">
+        <p className="text-gray-900 text-center">
           You haven’t posted any properties yet.
         </p>
       ) : (

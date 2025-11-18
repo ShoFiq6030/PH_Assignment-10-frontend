@@ -7,17 +7,18 @@ import { toast } from "react-toastify";
 import Loading from "../components/common/Loading";
 
 export default function PrivateRoute({ children }) {
-  const { user,authLoading } = useAuth();
+  const { user, authLoading } = useAuth();
   const { setOpenLoginModal } = useLoginModal();
 
-  if(authLoading){
-    return <Loading/>
+  if (authLoading) {
+    return <Loading />;
   }
 
   if (!user) {
+    toast.error("Unauthorized! Please Login.");
     setOpenLoginModal(true);
-    toast.error("Unauthorized! Please Login.")
-    return <Navigate to="/" replace />;
+
+    return <Navigate to="/" />;
   }
 
   return <>{children}</>;

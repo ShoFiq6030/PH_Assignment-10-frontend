@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useApi } from "../hooks/useApi";
 import PropertyCard from "../components/common/PropertyCard";
 import Loading from "../components/common/Loading";
 
 import PropertyFilters from "../components/AllPropertiesPage/PropertyFilters";
 import { useTheme } from "../hooks/useTheme";
+import axios from "axios";
+import useDebounce from "../utils/debounce";
 
 export default function AllPropertiesPage() {
   const [active, setActive] = useState("All");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [data, setData] = useState([]);
 
   // Filter states
   const [search, setSearch] = useState("");
@@ -15,47 +20,53 @@ export default function AllPropertiesPage() {
   const [bedroom, setBedroom] = useState("");
   const [bath, setBath] = useState("");
   const [garage, setGarage] = useState("");
-  const [sortBy, setSortBy] = useState("");
-  // const [filtering, setFiltering] = useState(false);
+  const [sortByPrice, setSortByPrice] = useState("");
+  const [sortByTime, setSortByTime] = useState("");
+
+  const debouncedSearch = useDebounce(search, 500);
+
   const { theme } = useTheme();
-  const {
-    data = [],
-    loading,
-    error,
-  } = useApi({
-    url: "/api/properties",
-    method: "GET",
-  });
 
   const categories = ["All", "Sale", "Commercial", "Land", "Rent"];
 
-  const filteredProperties = data
-    ?.filter((property) => {
-      if (active !== "All" && property.category !== active) return false;
-      if (
-        search &&
-        !property.propertyName?.toLowerCase().includes(search.toLowerCase())
-      )
-        return false;
-      if (room && property.Rooms < Number(room)) return false;
-      if (bedroom && property.Bedrooms < Number(bedroom)) return false;
-      if (bath && property.Bath < Number(bath)) return false;
-      if (garage && property.Garages < Number(garage)) return false;
-      return true;
-    })
-    ?.sort((a, b) => {
-      if (sortBy === "low-high") return a.price - b.price;
-      if (sortBy === "high-low") return b.price - a.price;
-      return 0;
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  const handleFilterChange = (callback) => {
-    setFiltering(true);
-    setTimeout(() => {
-      callback();
-      setFiltering(false);
-    }, 1000);
-  };
+        const params = {};
+
+        if (debouncedSearch) params.search = debouncedSearch;
+        if (sortByPrice) {
+          params.sortBy = "price";
+          params.order = sortByPrice;
+        }
+        if (sortByTime) {
+          params.sortBy = "createdAt";
+          params.order = sortByTime;
+        }
+
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/properties`,
+          { params }
+        );
+        setData(res.data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load properties");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [debouncedSearch, sortByPrice, sortByTime]);
+
+  const filteredProperties = data.filter((property) => {
+    if (active !== "All" && property.category !== active) return false;
+    return true;
+  });
 
   if (error)
     return (
@@ -65,7 +76,9 @@ export default function AllPropertiesPage() {
     );
 
   return (
-    <section className={`px-6 py-10 ${theme === "dark" && "bg-gray-600"}`}>
+    <section
+      className={`px-6 py-10 ${theme === "dark" && "bg-gray-600"} w-full`}
+    >
       {/* Page Header */}
       <div className="text-center mb-8">
         <h1
@@ -81,7 +94,7 @@ export default function AllPropertiesPage() {
       </div>
 
       {/* Category Filter Tabs */}
-      <div className="flex justify-center flex-wrap gap-4 border-b border-pink-600 pb-3 mb-8">
+      <div className="flex justify-center flex-wrap gap-4 border-b border-pink-600 pb-3 mb-8 w-full">
         {categories.map((category) => (
           <button
             key={category}
@@ -98,25 +111,28 @@ export default function AllPropertiesPage() {
       </div>
 
       {/* Filter Component */}
-      <PropertyFilters
-        search={search}
-        setSearch={setSearch}
-        room={room}
-        setRoom={setRoom}
-        bedroom={bedroom}
-        setBedroom={setBedroom}
-        bath={bath}
-        setBath={setBath}
-        garage={garage}
-        setGarage={setGarage}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        handleFilterChange={handleFilterChange}
-      />
+      <div className="w-full mb-8">
+        <PropertyFilters
+          search={search}
+          setSearch={setSearch}
+          room={room}
+          setRoom={setRoom}
+          bedroom={bedroom}
+          setBedroom={setBedroom}
+          bath={bath}
+          setBath={setBath}
+          garage={garage}
+          setGarage={setGarage}
+          sortByPrice={sortByPrice}
+          setSortByPrice={setSortByPrice}
+          sortByTime={sortByTime}
+          setSortByTime={setSortByTime}
+        />
+      </div>
 
       {/* Property List */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[200px]">
+        <div className=" w-full">
           <Loading />
         </div>
       ) : filteredProperties?.length > 0 ? (

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { photoUploadToCloudinary } from "../../utils/uploadImgToCloudinary";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function UpdatePropertyModal({ isOpen, onClose, property }) {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
   });
 
   const [loading, setLoading] = useState(false);
+  const {theme}=useTheme()
 
   // Fill form when modal opens or property changes
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
 
       {/* Modal */}
       <div className="fixed inset-0 flex items-center justify-center z-250 p-4">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-screen overflow-y-auto">
+        <div className={` ${theme==="dark"?'bg-gray-500 ':"bg-white"} rounded-lg shadow-xl w-full max-w-3xl max-h-screen overflow-y-auto`}>
           <div className="flex justify-between items-center p-6 border-b">
             <h2 className="text-2xl font-bold">Update Property</h2>
             <button

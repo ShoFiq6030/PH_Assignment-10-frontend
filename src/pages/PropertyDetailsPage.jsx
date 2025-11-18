@@ -14,10 +14,12 @@ import PropertyReviews from "../components/PropertyDetailsPage/PropertyReviews";
 import ReviewForm from "../components/PropertyDetailsPage/ReviweForm";
 import PropertyReviewFormAndCard from "../components/PropertyDetailsPage/PropertyReviewFormAndCard";
 import { useTheme } from "../hooks/useTheme";
+import { useAuth } from "../hooks/useAuth";
 
 export default function PropertyDetailsPage() {
   const { id } = useParams();
   const { theme } = useTheme();
+  const { user } = useAuth();
 
   const {
     data = {},
@@ -50,6 +52,7 @@ export default function PropertyDetailsPage() {
         Failed to load property details. Please try again later.
       </div>
     );
+    console.log(user);
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-10">
@@ -120,24 +123,42 @@ export default function PropertyDetailsPage() {
             >
               Property Description
             </h2>
-            <p className={` ${theme==="dark"?"text-white":"text-gray-600"} leading-relaxed`}>{description}</p>
+            <p
+              className={` ${
+                theme === "dark" ? "text-white" : "text-gray-600"
+              } leading-relaxed`}
+            >
+              {description}
+            </p>
           </div>
 
           {/* Price */}
-          <div className={`flex items-center justify-between ${theme==="dark"? "bg-gray-700":"bg-gray-100"}  p-4 rounded-lg shadow-sm`}>
+          <div
+            className={`flex items-center justify-between ${
+              theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+            }  p-4 rounded-lg shadow-sm`}
+          >
             <p className="text-2xl font-bold text-pink-600">${price}</p>
           </div>
         </div>
 
         {/* Right: Agent Info */}
-        <aside className={` ${theme==="dark"?'bg-gray-400':"bg-white"} shadow-md  p-6 border`}>
+        <aside
+          className={` ${
+            theme === "dark" ? "bg-gray-400" : "bg-white"
+          } shadow-md  p-6 border`}
+        >
           <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
             Agent Information
           </h3>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
-              <FaUser className="text-pink-600 text-xl" />
-            </div>
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt={userName} className="w-12 h-12 flex rounded-full" />
+            ) : (
+              <div className="w-12 h-12 flex items-center justify-center bg-pink-100 rounded-full">
+                <FaUser className="text-pink-600 text-xl" />
+              </div>
+            )}
             <div>
               <p className="font-medium text-gray-800">{userName || "Agent"}</p>
               <p className="text-sm text-gray-500">Property Agent</p>

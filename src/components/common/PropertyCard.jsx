@@ -36,6 +36,7 @@ export default function PropertyCard({ property = {}, featured = false }) {
     area = "720 sq ft",
     price = "$350,000",
     image = "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+    createdAt,
   } = property;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
@@ -68,6 +69,15 @@ export default function PropertyCard({ property = {}, featured = false }) {
   };
 
   const formattedPrice = price?.toLocaleString();
+
+  const date = new Date(createdAt);
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date);
+
+  // console.log(formattedDate);
 
   return (
     <div
@@ -126,14 +136,17 @@ export default function PropertyCard({ property = {}, featured = false }) {
         <div className="flex justify-between items-center">
           {" "}
           {user ? (
-            <Link
-              to={`/all-properties/${_id}`}
-              className={`font-semibold text-lg ${
-                theme === "dark" ? "text-white" : "text-black"
-              } hover:underline cursor-pointer`}
-            >
-              {propertyName}
-            </Link>
+            <div>
+              <Link
+                to={`/all-properties/${_id}`}
+                className={`font-semibold text-lg ${
+                  theme === "dark" ? "text-white" : "text-black"
+                } hover:underline cursor-pointer`}
+              >
+                {propertyName}
+              </Link>
+              <p>{formattedDate}</p>
+            </div>
           ) : (
             <h2
               onClick={() => {
@@ -196,7 +209,7 @@ export default function PropertyCard({ property = {}, featured = false }) {
         <div className="flex justify-between items-center mt-4">
           <p
             className={`text-lg font-semibold  ${
-              theme === "dark" ? "text-white" : "text-gray-800"
+              theme === "dark" ? "text-pink-600" : "text-gray-800"
             }`}
           >
             ${formattedPrice}

@@ -323,9 +323,12 @@ export default function LoginAndRegistration({
 
               <button
                 type="submit"
-                className="w-full bg-pink-600 text-white py-3 rounded-md font-semibold hover:bg-pink-700 transition-colors"
+                disabled={loading}
+                className={`w-full bg-pink-600 text-white py-3 rounded-md font-semibold hover:bg-pink-700 transition-colors ${
+                  loading && "cursor-not-allowed"
+                }`}
               >
-                Register
+                {loading ? "Submitting...." : "Register"}
               </button>
             </form>
           )}

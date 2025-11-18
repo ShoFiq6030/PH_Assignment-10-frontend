@@ -2,9 +2,11 @@ import React from "react";
 import { useParams } from "react-router";
 import { useApi } from "../hooks/useApi";
 import Loading from "../components/common/Loading";
+import { useTheme } from "../hooks/useTheme";
 
 export default function UserProfilePage() {
   const { id } = useParams();
+  const { theme } = useTheme();
   const {
     data: user,
     loading,
@@ -27,7 +29,11 @@ export default function UserProfilePage() {
 
   return (
     <section className="px-6 py-10">
-      <div className="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8 border border-pink-100">
+      <div
+        className={`max-w-2xl mx-auto  ${
+          theme === "dark" ? " bg-gray-400" : "bg-white"
+        } shadow-md rounded-xl p-8 border border-pink-100`}
+      >
         {/* Profile Header */}
         <div className="flex flex-col items-center">
           {/* Avatar */}

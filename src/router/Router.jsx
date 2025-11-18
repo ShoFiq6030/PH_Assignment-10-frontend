@@ -29,7 +29,11 @@ let router = createBrowserRouter([
       },
       {
         path: "/all-properties/:id",
-        element: <PropertyDetailsPage />,
+        element: (
+          <PrivateRoute>
+            <PropertyDetailsPage />
+          </PrivateRoute>
+        ),
       },
 
       {

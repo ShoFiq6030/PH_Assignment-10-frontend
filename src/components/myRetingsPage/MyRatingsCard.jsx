@@ -9,7 +9,12 @@ export default function MyRatingsCard({ review }) {
 
   const { theme } = useTheme();
 
-  const date = new Date(createdAt).toLocaleDateString();
+  const date = new Date(createdAt);
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date);
 
   return (
     <Link
@@ -19,7 +24,7 @@ export default function MyRatingsCard({ review }) {
         hover:shadow-lg border
         ${
           theme === "dark"
-            ? "bg-gray-800 border-gray-700 hover:shadow-gray-900"
+            ? "bg-gray-500 border-gray-700 hover:shadow-gray-900"
             : "bg-white border-gray-200 hover:shadow-gray-300"
         }
       `}
@@ -84,7 +89,7 @@ export default function MyRatingsCard({ review }) {
             theme === "dark" ? "text-gray-500" : "text-gray-400"
           }`}
         >
-          {date}
+          {formattedDate}
         </p>
       </div>
     </Link>
