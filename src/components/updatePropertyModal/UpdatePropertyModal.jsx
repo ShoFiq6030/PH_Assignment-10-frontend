@@ -75,7 +75,7 @@ export default function UpdatePropertyModal({ isOpen, onClose, property }) {
           },
         }
       );
-      console.log(res);
+      // console.log(res);
       const data = res.data;
 
       if (!res.status === 200) throw new Error(data.message || "Update failed");

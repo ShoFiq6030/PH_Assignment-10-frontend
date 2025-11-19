@@ -142,7 +142,7 @@ export default function LoginAndRegistration({
       let photoURL;
       if (photoFile) {
         photoURL = await photoUploadToCloudinary(photoFile);
-        console.log("Uploaded photo URL:", photoURL);
+        // console.log("Uploaded photo URL:", photoURL);
       }
 
       const res = await axios.post(

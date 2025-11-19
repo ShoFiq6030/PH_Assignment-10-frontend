@@ -52,7 +52,7 @@ export default function PropertyDetailsPage() {
         Failed to load property details. Please try again later.
       </div>
     );
-    console.log(user);
+    // console.log(user);
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-10">

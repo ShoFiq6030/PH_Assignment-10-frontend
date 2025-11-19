@@ -10,7 +10,7 @@ import { useTheme } from "../hooks/useTheme";
 export default function HomePage() {
   const { theme, setTheme } = useTheme();
   return (
-    <div className={`h-full ${theme === "dark" && "bg-gray-600 text-white"}`}>
+    <div className={`h-full ${theme === "dark" && "bg-gray-600 "}`}>
       <HeroSection />
       <FeatureProperties />
       <ForSellSection />

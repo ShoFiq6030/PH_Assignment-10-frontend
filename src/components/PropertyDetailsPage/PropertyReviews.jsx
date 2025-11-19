@@ -33,7 +33,7 @@ export default function PropertyReviews({ reviewData, loading, error }) {
         setReviews((prev) => prev.filter((r) => r._id !== selectedReviewId));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Something went wrong!");
     } finally {
       setOpenConfirm(false);
